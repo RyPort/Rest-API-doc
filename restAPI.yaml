@@ -1,0 +1,75 @@
+openapi: 3.0.0
+info:
+  title: Coffee Shop locations API
+  description: Stores locations of coffee shops. Can retrieve closest location to a given zip code
+
+paths:
+  /locations?zipcode:
+  get:
+    summary: returns a list of coffee shops nearest to the given zipcode.
+    parameters:
+      - in: query
+        name: zipcode
+        required: true
+        schema:
+          type: integer
+        description: The zipcode used to search for coffee shop locations
+    responses:
+      '200':
+        description: A list of coffee shop locations nearest to the given zipcode
+      '400':
+        description: Invalid zipcode
+      '404':
+        description: No locations nearby the given zipcode
+
+  /locations:
+  post:
+    summary: Adds a new coffee shop location
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              shopId:
+                type: integer
+              address:
+                type: string
+              zipcode:
+                type: integer
+              state:
+                type: string
+            required:
+              - shopId
+              - address
+              - zipcode
+              - state
+
+    responses:
+      '200':
+        description: New location was added successfully
+      '400':
+        description: One or more parameters was missing or had invalid syntax
+
+  /locations?shopId:
+  delete:
+    summary: Deletes the coffee shop associated with the given shopId
+    parameters:
+      - in: query
+        name: shopId
+        required: true
+        schema:
+          type: integer
+        description: the shopId to delete
+    responses:
+      '200':
+        description: Location successfully deleted
+      '403':
+        description: Given user doesn't have authorization to delete records
+      '400':
+        description: shopID is not valid
+
+
+              
+
